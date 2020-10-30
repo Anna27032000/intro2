@@ -9,4 +9,9 @@
         <property name="prefix" value="/"/>
         <property name="suffix" value=".jsp"/>
     </bean>
+    <bean id="receiver" class="org.zviaghintseva.intro2.implement.ReceiverImpl"/>
+    <bean id="sender" class="org.zviaghintseva.intro2.implement.SenderImpl">
+        <constructor-arg name="receiver" ref="receiver"/>
+
+    </bean>
 </beans>
