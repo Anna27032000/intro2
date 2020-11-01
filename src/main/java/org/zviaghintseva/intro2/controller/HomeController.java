@@ -1,9 +1,11 @@
 package org.zviaghintseva.intro2.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
 import org.zviaghintseva.intro2.implement.ReceiverImpl;
@@ -31,15 +33,19 @@ private Collection<User> users = new ArrayList<>();
     }
     @RequestMapping(value = "/users")
     public String getUsers(Model model){
-          model.addAttribute("users", users);
+          model.addAttribute("user", users);
         return "users";
     }
     @GetMapping(value = "/")
-    public String getSingUp(){
+    public String getSingUp(Model model){
+          model.addAttribute("user", new User());
           return "sing_up";
     }
     @PostMapping(value = "/")
-        public String getSingUp( @ModelAttribute User user){
+        public String getSingUp(@ModelAttribute @Valid User user, BindingResult result){
+          if (result.hasErrors()){
+              return "sing_up";
+          }
           users.add(user);
           return "redirect:/users";
         }
